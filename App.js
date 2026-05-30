@@ -1,17 +1,6 @@
-<<<<<<< Updated upstream
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-=======
-import { useState } from 'react'; 
-import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, SafeAreaView, Modal, View, TextInput } from 'react-native';
+import {Pressable, StyleSheet, Text, SafeAreaView, Modal, View, TextInput} from 'react-native';
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,38 +8,48 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
+
       <Text style={styles.titulo}>
-        Administrador de citas {" "}
+        Administrador de citas
       </Text>
 
       <Text style={styles.tituloBold}>
         Veterinaria
       </Text>
 
-     
-      <Modal style={styles.formulario} visible={modalVisible} animationType="slide">
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+      >
+        <View style={styles.formulario}>
           <View style={styles.campo}>
-          <Text style={styles.label}>Nombre Paciente</Text>
-          <Text>Nombre paciente</Text>
-          <TextInput 
-          style={styles.input}
-          placeholder='Nombre paciente'
-          placeholderTextColor={'#666'}
-          value={nombrePaciente}
-          onChangeText={setNombrePaciente}
-          maxLength={20}
-          multiline={true}
-          numberOfLines={4}
-          keyboardType='email-address'
-          />
-          
-          <Pressable style={styles.btnNuevaCita} onPress={() => setModalVisible(false)}>
-            <Text style={styles.btnTextoNuevaCita}> Cerrar modal</Text>
-          </Pressable>
+            <Text style={styles.label}>
+              Nombre Paciente
+            </Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Nombre paciente"
+              placeholderTextColor="#666"
+              value={nombrePaciente}
+              onChangeText={setNombrePaciente}
+              maxLength={20}
+            />
+
+            <Pressable
+              style={styles.btnCerrar}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.btnTextoCerrar}>
+                Cerrar modal
+              </Text>
+            </Pressable>
           </View>
+        </View>
       </Modal>
 
-      <Pressable 
+      <Pressable
         style={styles.btnNuevaCita}
         onPress={() => setModalVisible(true)}
       >
@@ -59,36 +58,75 @@ export default function App() {
         </Text>
       </Pressable>
     </SafeAreaView>
->>>>>>> Stashed changes
   );
 }
 
 const styles = StyleSheet.create({
-  formulario: {
-    backgroundColor: '#6D28D9',
-    flex: 1
-  },
   container: {
-<<<<<<< Updated upstream
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-=======
     backgroundColor: '#F3F4F6',
-    flex: 1
+    padding: 20
   },
-  
-  // ---------------------------------------
-  btnCerrar: {
-    backgroundColor: '#F59E0B', 
+
+  titulo: {
+    textAlign: 'center',
+    fontSize: 28,
+    fontWeight: '600',
+    marginTop: 40
+  },
+
+  tituloBold: {
+    textAlign: 'center',
+    fontSize: 32,
+    fontWeight: '900',
+    color: '#6D28D9',
+    marginBottom: 40
+  },
+
+  formulario: {
+    flex: 1,
+    backgroundColor: '#6D28D9',
+    padding: 20
+  },
+
+  campo: {
+    marginTop: 30
+  },
+
+  label: {
+    color: '#FFF',
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 10
+  },
+
+  input: {
+    backgroundColor: '#FFF',
+    borderRadius: 10,
     padding: 15,
-    marginTop: 30,
-    marginHorizontal: 20,
+    fontSize: 16
+  },
+
+  btnNuevaCita: {
+    backgroundColor: '#6D28D9',
+    padding: 15,
     borderRadius: 10
   },
+
+  btnTextoNuevaCita: {
+    color: '#FFF',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700'
+  },
+
+  btnCerrar: {
+    backgroundColor: '#F59E0B',
+    padding: 15,
+    marginTop: 30,
+    borderRadius: 10
+  },
+
   btnTextoCerrar: {
     textAlign: 'center',
     color: '#FFF',
@@ -97,4 +135,3 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase'
   }
 });
->>>>>>> Stashed changes
