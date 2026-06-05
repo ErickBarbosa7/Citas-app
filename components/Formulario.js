@@ -1,35 +1,27 @@
 import { View, Text, Modal, SafeAreaView, ScrollView, Pressable, TextInput, StyleSheet } from "react-native";
-<<<<<<< Updated upstream
-import React from "react";
-=======
 import React, { useState } from "react";
-// traemos las librerias para el calendario y las fechas
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 
-//props
 const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
     // estados para guardar lo que el usuario escribe
     const [paciente, setPaciente] = useState('');
     const [email, setEmail] = useState('');
     const [telefono, setTelefono] = useState('');
     const [sintomas, setSintomas] = useState('');
-    
-    // empieza con la fecha de hoy
     const [fecha, setFecha] = useState(dayjs());
-    const [openPicker, setOpenPicker] = useState(false);
-
-    // limpiar los campos
+    
     const limpiarCampos = () => {
     setPaciente('');
     setEmail('');
     setTelefono('');
     setFecha(dayjs());
     setSintomas('');
-  };
+};
+    const [openPicker, setOpenPicker] = useState(false);
 
     const handleCita = () => {
-        // validacion rapida para que no manden datos vacios
+        // validacion para que no manden datos vacios
         if([paciente, email, telefono, sintomas].includes('')) {
             console.log('Hay campos vacios');
             return;
@@ -41,7 +33,6 @@ const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
             paciente,
             email,
             telefono,
-            // le damos formato a la fecha para que se guarde como texto
             fecha: dayjs(fecha).format('DD/MM/YYYY'), 
             sintomas
         };
@@ -49,32 +40,16 @@ const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
         // agregamos el paciente nuevo a la lista que ya teniamos
         setPacientes([...pacientes, nuevoPaciente]);
         
+        // limpiar el formulario
         limpiarCampos();
         cerrarModal();
     };
->>>>>>> Stashed changes
 
-const Formulario = () => {
-    const [id, setId] = useState('')
-    const [paciente, setPaciente] = useState('')
-    const [email, setEmail] = useState('')
     return (
-<<<<<<< Updated upstream
-        <Modal>
-            <SafeAreaView>
-                <ScrollView>
-                    <Text> Nueva Cita</Text>
-                    <Pressable>
-                        <Text> X Cancelar</Text>
-                    </Pressable>
-                    <View>
-                        <Text>Nombre del Paciente</Text>
-                        <TextInput/>
-                    </View>
-                    <Pressable>
-                        <Text> Guardar</Text>
-=======
-        <Modal animationType="slide" visible={modalVisible}>
+        <Modal 
+            animationType="slide" 
+            visible={modalVisible}
+        >
             <SafeAreaView style={styles.formulario}>
                 <ScrollView>
                     <Text style={styles.titulo}>Nueva <Text style={styles.tituloBold}>Cita</Text></Text>
@@ -83,13 +58,13 @@ const Formulario = () => {
                         style={styles.btnCancelar}
                         onPress={() => {
                             limpiarCampos();
-                            cerrarModal();   
+                            cerrarModal();  
                         }}
                     >
                         <Text style={styles.btnCancelarTexto}>X Cancelar</Text>
                     </Pressable>
                     
-                    {/* inputs */}
+                    {/* inputs  */}
                     <View style={styles.campo}>
                         <Text style={styles.label}>Nombre del Paciente</Text>
                         <TextInput style={styles.input} placeholder="Nombre Paciente" placeholderTextColor="#666" value={paciente} onChangeText={setPaciente} />
@@ -105,6 +80,7 @@ const Formulario = () => {
                         <TextInput style={styles.input} placeholder="Teléfono" placeholderTextColor="#666" keyboardType="phone-pad" maxLength={10} value={telefono} onChangeText={setTelefono}/>
                     </View>
 
+                    {/* area del calendario */}
                     <View style={styles.campo}>
                         <Text style={styles.label}>Fecha</Text>
                         
@@ -115,7 +91,6 @@ const Formulario = () => {
                             <Text style={styles.inputText}>
                                 {dayjs(fecha).format('DD/MM/YYYY')}
                             </Text>
-                            <Text style={styles.iconoCalendario}>📅</Text>
                         </Pressable>
 
                         {openPicker && (
@@ -135,7 +110,7 @@ const Formulario = () => {
                     </View>
 
                     <View style={styles.campo}>
-                        <Text style={styles.label}>Sintomas</Text>
+                        <Text style={styles.label}>Síntomas</Text>
                         <TextInput 
                             style={[styles.input, { height: 100, textAlignVertical: 'top' }]} placeholder="Describe los síntomas" placeholderTextColor="#666" value={sintomas} onChangeText={setSintomas} multiline={true} numberOfLines={4}
                         />
@@ -146,7 +121,6 @@ const Formulario = () => {
                         onPress={handleCita}
                     >
                         <Text style={styles.btnNuevaCitaTexto}>Guardar</Text>
->>>>>>> Stashed changes
                     </Pressable>
                 </ScrollView>
             </SafeAreaView>
@@ -154,61 +128,6 @@ const Formulario = () => {
     );
 }
 
-<<<<<<< Updated upstream
-const style = StyleSheet.create({
-    campo:{
-      marginTop:10,
-      marginHorizontal:30
-  },
-  titulo: {
-    textAlign: 'center',
-    fontSize: 30,
-    color: '#374151',
-    fontWeight: '600'
-  },
-  tituloBold: {
-    fontWeight: '900',
-    color: '#6D28D9',
-    textAlign: 'center'
-  },
-  btnNuevaCita: {
-    backgroundColor: '#6D28D9',
-    padding: 15,
-    marginTop: 30,
-    marginHorizontal: 20,
-    borderRadius: 10
-  },
-  btnTextoNuevaCita: {
-    textAlign: 'center',
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '900',
-    textTransform: 'uppercase'
-  },
-  contenidoModal: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
-  label: {
-    color: '#374151', 
-    marginBottom: 10, 
-    marginTop: 40,
-    fontSize: 20,
-    fontWeight: '600',
-    marginHorizontal: 20,
-  },
-  input: {
-    backgroundColor: '#F3F4F6',
-    padding: 15,
-    borderRadius: 10,
-    marginHorizontal: 20,
-    marginTop: 10,
-    fontSize: 16
-  },
-})
-
-export default Formulario
-=======
 const styles = StyleSheet.create({
     titulo: {
         fontSize: 30,
@@ -292,4 +211,3 @@ const styles = StyleSheet.create({
 });
 
 export default Formulario;
->>>>>>> Stashed changes
