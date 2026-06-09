@@ -20,14 +20,23 @@ const Formulario = ({
     const [fecha, setFecha] = useState(dayjs());
     
     useEffect(() => {
-    if (paciente?.id) {
-        setPacienteState(paciente.paciente);
-        setPropietario(paciente.propietario);
-        setEmail(paciente.email);
-        setTelefono(paciente.telefono);
-        setSintomas(paciente.sintomas);
-        setFecha(dayjs(paciente.fecha, 'DD/MM/YYYY'));
-    }
+        if (paciente?.id) {
+            setPacienteState(paciente.paciente);
+            setPropietario(paciente.propietario);
+            setEmail(paciente.email);
+            setTelefono(paciente.telefono);
+            setSintomas(paciente.sintomas);
+            
+            const [dia, mes, anio] = paciente.fecha.split('/');
+            setFecha(dayjs(new Date(anio, mes - 1, dia)));
+        } else {
+            setPacienteState('');
+            setPropietario('');
+            setEmail('');
+            setTelefono('');
+            setFecha(dayjs());
+            setSintomas('');
+        }
     }, [paciente]);
 
     const limpiarCampos = () => {
@@ -37,6 +46,7 @@ const Formulario = ({
     setTelefono('');
     setFecha(dayjs());
     setSintomas('');
+    setPaciente({});
 };
     const [openPicker, setOpenPicker] = useState(false);
 
