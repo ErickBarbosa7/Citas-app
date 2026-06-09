@@ -1,18 +1,38 @@
 import { View, Text, Modal, SafeAreaView, ScrollView, Pressable, TextInput, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 
-const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
+const Formulario = ({
+     modalVisible, 
+     cerrarModal, 
+     pacientes, 
+     setPacientes,
+     paciente,
+     setPaciente
+    }) => {
     // estados para guardar lo que el usuario escribe
-    const [paciente, setPaciente] = useState('');
+    const [pacienteState, setPacienteState] = useState('');
+    const [propietario, setPropietario] = useState('');
     const [email, setEmail] = useState('');
     const [telefono, setTelefono] = useState('');
     const [sintomas, setSintomas] = useState('');
     const [fecha, setFecha] = useState(dayjs());
     
+    useEffect(() => {
+    if (paciente?.id) {
+        setPacienteState(paciente.paciente);
+        setPropietario(paciente.propietario);
+        setEmail(paciente.email);
+        setTelefono(paciente.telefono);
+        setSintomas(paciente.sintomas);
+        setFecha(dayjs(paciente.fecha, 'DD/MM/YYYY'));
+    }
+    }, [paciente]);
+
     const limpiarCampos = () => {
-    setPaciente('');
+    setPacienteState('');
+    setPropietario('');
     setEmail('');
     setTelefono('');
     setFecha(dayjs());
@@ -20,25 +40,37 @@ const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
 };
     const [openPicker, setOpenPicker] = useState(false);
 
+   
+
     const handleCita = () => {
         // validacion para que no manden datos vacios
-        if([paciente, email, telefono, sintomas].includes('')) {
+        if([pacienteState, propietario, email, telefono, sintomas].includes('')) {
             console.log('Hay campos vacios');
             return;
         }
 
         // armamos el objeto con los datos del paciente nuevo
-        const nuevoPaciente = {
-            id: Date.now().toString(),
-            paciente,
+        const datosPaciente = {
+            paciente: pacienteState,
+            propietario,
             email,
             telefono,
-            fecha: dayjs(fecha).format('DD/MM/YYYY'), 
+            fecha: dayjs(fecha).format('DD/MM/YYYY'),
             sintomas
         };
-
-        // agregamos el paciente nuevo a la lista que ya teniamos
-        setPacientes([...pacientes, nuevoPaciente]);
+        
+        if (paciente?.id) {
+            // Editar
+            const pacientesActualizados = pacientes.map(p =>
+                p.id === paciente.id ? { ...datosPaciente, id: paciente.id } : p
+            );
+            setPacientes(pacientesActualizados);
+            setPaciente({});  // limpiar paciente global
+        } else {
+            // Crear
+            const nuevoPaciente = { id: Date.now().toString(), ...datosPaciente };
+            setPacientes([...pacientes, nuevoPaciente]);
+        }
         
         // limpiar el formulario
         limpiarCampos();
@@ -52,7 +84,9 @@ const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
         >
             <SafeAreaView style={styles.formulario}>
                 <ScrollView>
-                    <Text style={styles.titulo}>Nueva <Text style={styles.tituloBold}>Cita</Text></Text>
+                    <Text style={styles.titulo}>
+                    {paciente?.id ? 'Editar' : 'Nueva'} {''} <Text style={styles.tituloBold}>Cita</Text>
+                    </Text>
                     
                     <Pressable 
                         style={styles.btnCancelar}
@@ -67,11 +101,16 @@ const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
                     {/* inputs  */}
                     <View style={styles.campo}>
                         <Text style={styles.label}>Nombre del Paciente</Text>
-                        <TextInput style={styles.input} placeholder="Nombre Paciente" placeholderTextColor="#666" value={paciente} onChangeText={setPaciente} />
+                        <TextInput style={styles.input} placeholder="Nombre Paciente" placeholderTextColor="#666" value={pacienteState} onChangeText={setPacienteState} />
                     </View>
 
                     <View style={styles.campo}>
-                        <Text style={styles.label}>Email del Paciente</Text>
+                        <Text style={styles.label}>Nombre Propietario</Text>
+                        <TextInput style={styles.input} placeholder="Nombre Propietario" placeholderTextColor="#666" value={propietario} onChangeText={setPropietario} />
+                    </View>
+
+                    <View style={styles.campo}>
+                        <Text style={styles.label}>Email Propietario</Text>
                         <TextInput style={styles.input} placeholder="Email" placeholderTextColor="#666" keyboardType="email-address" value={email} onChangeText={setEmail} />
                     </View>
 
@@ -120,7 +159,7 @@ const Formulario = ({ modalVisible, cerrarModal, pacientes, setPacientes }) => {
                         style={styles.btnNuevaCita}
                         onPress={handleCita}
                     >
-                        <Text style={styles.btnNuevaCitaTexto}>Guardar</Text>
+                        <Text style={styles.btnNuevaCitaTexto}>{paciente?.id ? 'Editar Paciente' : 'Guardar'}</Text>
                     </Pressable>
                 </ScrollView>
             </SafeAreaView>

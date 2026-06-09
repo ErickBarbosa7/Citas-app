@@ -3,11 +3,13 @@ import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native';
 import Formulario from './components/Formulario';
 import Paciente from './components/Paciente';
+import InformacionPaciente from './components/InformacionPaciente';
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  
-  const [paciente, setPaciente] = useState('');
+  const [modalPaciente, setModalPaciente] = useState(false);
+
+  const [paciente, setPaciente] = useState({});
   const [pacientes, setPacientes] = useState([]);
 
   const cerrarModal = () => {
@@ -29,7 +31,11 @@ export default function App() {
 
       <Pressable
         style={styles.btnNuevaCita}
-        onPress={() => setModalVisible(true)}>
+        onPress={() => 
+        {
+          setPaciente({}); 
+          setModalVisible(true)}
+        }>
 
         <Text style={styles.btnTextoNuevaCita}>
           Nueva cita
@@ -45,13 +51,18 @@ export default function App() {
               item={item}
               setModalVisible={setModalVisible}
               setPacientes={setPacientes}
+              setPaciente={setPaciente}
+              setModalPaciente={setModalPaciente}
             />
           ))
         )}
 
       </ScrollView>
       <Formulario 
-        modalVisible={modalVisible} cerrarModal={cerrarModal} pacientes={pacientes} setPacientes={setPacientes}
+        modalVisible={modalVisible} cerrarModal={cerrarModal} pacientes={pacientes} setPacientes={setPacientes} paciente={paciente} setPaciente={setPaciente}
+      />
+      <InformacionPaciente
+        paciente={paciente} setPaciente={setPaciente} setModalPaciente={setModalPaciente} modalPaciente={modalPaciente}
       />
     </SafeAreaView>
   );

@@ -1,18 +1,31 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 
+
 const Paciente = ({
-item, setModalVisible, setPaciente, setPacientes
+item, setModalVisible, setPaciente, setPacientes, setModalPaciente
 }) => {
     return (
-        <Pressable>
+        
+        <Pressable
+        onLongPress={() => {
+                setPaciente(item); //Informacion del paciente
+                setModalPaciente(true); //ventana de InformacionPaciente 
+            }}>
+            
+
             <View style={styles.contenedor}>
                 <Text style={styles.label}> Paciente: </Text>
                 <Text style={styles.texto}> {item.paciente}</Text>
                 <Text style={styles.fecha}>{item.fecha}</Text>
 
                 <View style={styles.contenedorBotones}>
-                    <Pressable style={[styles.btn, styles.btnEditar]}>
+                    <Pressable style={[styles.btn, styles.btnEditar]}
+                    onPress={() => {
+                        setPaciente(item);       
+                        setModalVisible(true);
+                    }}
+                    >
                         <Text style={styles.btnTexto}>Editar</Text>
                     </Pressable>
 
